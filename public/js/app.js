@@ -17,9 +17,21 @@ function tampilkanHabits(habits) {
     let html = '';
 
     habits.forEach(habit => {
-        html += `<div class="habit-card"> 
-            <h3>${habit.name}</h3>
-        </div>`;
+        const log = habit.logs[0];
+        const currentValue = log ? log.current_value : 0;
+        const  isCompleted = log ? log.is_completed : false;
+
+        if (habit.type === 'progress') {
+            html += `<div class="habit-card"> 
+                <h3>${habit.name}</h3>
+                <p>${currentValue} / ${habit.target_value} ${habit.unit}</p>
+            </div>`;
+        } else {
+            html += `<div class="habit-card"> 
+                <h3>${habit.name}</h3>
+                 <input type="checkbox" ${isCompleted ? 'checked' : ''}>
+            </div>`;
+        }
     });
 
     container.innerHTML = html;
