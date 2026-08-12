@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\HabitController;
+use App\Http\Controllers\Api\HabitLogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('habits', HabitController::class);
+Route::post('/habit-logs', [HabitLogController::class, 'store']);
