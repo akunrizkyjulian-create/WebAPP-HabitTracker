@@ -1,5 +1,77 @@
-body{
-    font-family: Arial, sans-serif;
+body {
+    font-family: -apple-system, Arial, sans-serif;
+    background-color: #f0f0f0;
     margin: 0;
+    padding: 24px;
+}
+
+.habit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 400px;
+}
+
+.habit-card {
+    background-color: white;
+    border-radius: 16px;
     padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.habit-name {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    color: #1a1a1a;
+}
+
+.progress-bar-bg {
+    background-color: #e5e5e5;
+    border-radius: 8px;
+    height: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.progress-bar-fill {
+    background-color: #4a90d9;
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.3s ease;
+}
+
+.habit-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.habit-value {
+    font-size: 14px;
+    color: #666;
+}
+
+.habit-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-tambah, .btn-kurang {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background-color: #f0f0f0;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.btn-tambah:hover, .btn-kurang:hover {
+    background-color: #ddd;
+}
+
+.checkbox-habit {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
 }

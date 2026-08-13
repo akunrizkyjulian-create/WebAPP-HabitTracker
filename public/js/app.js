@@ -14,7 +14,7 @@ function tampilkanHabits(habits) {
         return;
     }
 
-    let html = '';
+    let html = '<div class="habit-list">';
 
     habits.forEach(habit => {
         const log = habit.logs[0];
@@ -22,19 +22,30 @@ function tampilkanHabits(habits) {
         const isCompleted = log ? log.is_completed : false;
 
         if (habit.type === 'progress') {
+            const percent = (currentValue / habit.target_value) * 100;
+
             html += `<div class="habit-card">
-                <h3>${habit.name}</h3>
-                <p>${currentValue} / ${habit.target_value} ${habit.unit}</p>
-                <button class="btn-kurang" data-id="${habit.id}" data-current="${currentValue}" data-target="${habit.target_value}">-</button>
-                <button class="btn-tambah" data-id="${habit.id}" data-current="${currentValue}" data-target="${habit.target_value}">+</button>
+                <h3 class="habit-name">${habit.name}</h3>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: ${percent}%"></div>
+                </div>
+                <div class="habit-footer">
+                    <span class="habit-value">${currentValue} / ${habit.target_value} ${habit.unit}</span>
+                    <div class="habit-buttons">
+                        <button class="btn-kurang" data-id="${habit.id}" data-current="${currentValue}" data-target="${habit.target_value}">-</button>
+                        <button class="btn-tambah" data-id="${habit.id}" data-current="${currentValue}" data-target="${habit.target_value}">+</button>
+                    </div>
+                </div>
             </div>`;
         } else {
-            html += `<div class="habit-card">
-                <h3>${habit.name}</h3>
+            html += `<div class="habit-card habit-checkbox-card">
+                <h3 class="habit-name">${habit.name}</h3>
                 <input type="checkbox" class="checkbox-habit" data-id="${habit.id}" ${isCompleted ? 'checked' : ''}>
             </div>`;
         }
     });
+
+    html += '</div>';
 
     container.innerHTML = html;
 
