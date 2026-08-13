@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 
 class HabitController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $today = now()->toDateString();
+       $date = $request->query('date', now()->toDateString());
 
-        $habits = Habit::with(['logs' => function ($query) use ($today) {
-            $query->where('date', $today);
+        $habits = Habit::with(['logs' => function ($query) use ($date) {
+            $query->where('date', $date);
         }])->get();
 
         return response()->json($habits);

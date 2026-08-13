@@ -1,9 +1,10 @@
 const API_URL = 'http://127.0.0.1:8000/api';
 
 async function ambilHabits() {
-    const response = await fetch(`${API_URL}/habits`);
+    const response = await fetch(`${API_URL}/habits?date=${selectedDate}`);
     const habits = await response.json();
     tampilkanHabits(habits);
+    tampilkanCircleProgress(hitungPresentase(habits));
 }
 
 function tampilkanHabits(habits) {
@@ -81,7 +82,7 @@ function pasangEventListener() {
 }
 
 async function updateProgress(habitId, newValue) {
-    const today = new Date().toISOString().split('T')[0];
+    const today = selectedDate;
 
     await fetch(`${API_URL}/habit-logs`, {
         method: 'POST',
@@ -100,7 +101,7 @@ async function updateProgress(habitId, newValue) {
 }
 
 async function updateCheckbox(habitId, isCompleted) {
-    const today = new Date().toISOString().split('T')[0];
+    const today = selectedDate;
 
     await fetch(`${API_URL}/habit-logs`, {
         method: 'POST',
@@ -118,4 +119,78 @@ async function updateCheckbox(habitId, isCompleted) {
     ambilHabits();
 }
 
+//hitung persentase & render circle
+function hitungPresentase(habits) {
+    if (habits.length === 0) return 0;
+
+    let selesai = 0;
+
+    habits.forEach(habit => {
+        const log = habit.logs[0];
+
+        if (habit.type === 'checkbox') {
+            if (log && log.is_completed) selesai++;
+        } else {
+            const currentValue = log ? parseFloat(log.current_value) : 0;
+            if (currentValue >= habit.target_value) selesai++;
+        }
+    });
+
+    return Math.round((selesai / habits.length) * 100);
+}
+
+function tampilkanCircleProgress(percent) {
+    const circle = document.getElementById('circle-progress');
+    circle.style.background = `conic-gradient(#4a90d9 ${percent}%, #e5e5e5 0)`;
+    circle.innerHTML = `<div class="circle-inner"> ${percent}% </div>`;
+}
+
+//Fitur jadwal/tanggal
+
+let selectedDate = formatTanggal(new Date());
+
+function formatTanggal(date) {
+    const tahun = date.getFullYear();
+    const bulan = String (date.getMonth() + 1).padStart(2, '0');
+    const tanggal = String(date.getDate()).padStart(2, '0');
+    return `${tahun}-${bulan}-${tanggal}`
+}
+
+function tampilkanDateNav() {
+    const namaHari = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    const tanggalAktif = new Date(selectedDate);
+    const hariKe = tanggalAktif.getDay();
+
+    const awalMinggu = new Date(tanggalAktif);
+    awalMinggu.setDate(tanggalAktif.getDate() - hariKe);
+
+    let html = '<div class="date-scroll">';
+    
+    for (let i = 0; i < 7; i++) {
+        const hari = new Date(awalMinggu);
+        hari.setDate(awalMinggu.getDate() + i);
+
+        const tanggalFormat = formatTanggal(hari);
+        const isActive = tanggalFormat === selectedDate;
+
+        html += `<div class="date-item ${isActive ? 'active' : ''}" data-date="${tanggalFormat}">
+            <span class="date-day-name">${namaHari[i]}</span>
+            <span class="date-day-number">${hari.getDate()}</span>
+        </div>`;
+    }
+
+    html += '</div>';
+
+    document.getElementById('date-nav').innerHTML = html;
+
+    document.querySelectorAll('.date-item').forEach(item => {
+        item.addEventListener('click', () => {
+            selectedDate = item.dataset.date;
+            ambilHabits();
+            tampilkanDateNav();
+        });
+    });
+}
+
+tampilkanDateNav();
 ambilHabits();
