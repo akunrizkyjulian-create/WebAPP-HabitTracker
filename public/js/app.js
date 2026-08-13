@@ -46,7 +46,9 @@ function pasangEventListener() {
         button.addEventListener('click', () => {
             const id = button.dataset.id;
             const current = parseFloat(button.dataset.current);
-            updateProgress(id, current + 0.5);
+            const target = parseFloat(button.dataset.target);
+            const newValue = Math.min(target, current + 0.5);
+            updateProgress(id,newValue);
         });
     });
 
