@@ -110,3 +110,45 @@ body {
     font-weight: bold;
     color:#333;
 }
+
+.date-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    max-width: 400px;
+    margin-bottom: 20px;
+    padding-bottom: 4px;
+}
+
+.date-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    flex-shrink: 0;
+    background-color: white;
+}
+
+.date-day-name {
+    font-size: 11px;
+    color: #999;
+    font-weight: bold;
+}
+
+.date-day-number {
+    font-size: 15px;
+    color: #1a1a1a;
+    font-weight: bold;
+}
+
+.date-item.active {
+    background-color: #1a1a1a;
+}
+
+.date-item.active .date-day-name,
+.date-item.active .date-day-number {
+    color: white;
+}
