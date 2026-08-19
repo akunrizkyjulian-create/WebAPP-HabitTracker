@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('habits', HabitController::class);
 Route::post('/habit-logs', [HabitLogController::class, 'store']);
+Route::get('/habits/{id}/streak', [HabitController::class, 'streak']);

@@ -41,6 +41,7 @@ function tampilkanHabits(habits) {
         } else {
             html += `<div class="habit-card habit-checkbox-card">
                 <h3 class="habit-name">${habit.name}</h3>
+                <p class="habit-streak" id="streak-${habit.id}"></p>
                 <input type="checkbox" class="checkbox-habit" data-id="${habit.id}" ${isCompleted ? 'checked' : ''}>
             </div>`;
         }
@@ -51,7 +52,24 @@ function tampilkanHabits(habits) {
     container.innerHTML = html;
 
     pasangEventListener();
+
+    habits.forEach(habit => {
+        if (habit.type === 'checkbox') {
+            tampilkanStreak(habit.id);
+        }
+    })
 }
+
+async function tampilkanStreak(habitId) {
+    const response = await fetch(`${API_URL}/habits/${habitId}/streak`);
+    const data = await response.json();
+
+    const elemen = document.getElementById(`streak-${habitId}`);
+    if (elemen) {
+        elemen.textContent = `${data.streak} Day Streak`;
+    }
+}
+
 
 function pasangEventListener() {
     document.querySelectorAll('.btn-tambah').forEach(button => {

@@ -65,4 +65,33 @@ class HabitController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function streak($id)
+    {
+        $date = now();
+        $streak = 0;
+
+        $logHariIni = \App\Models\HabitLog::where('habit_id', $id)
+            ->where('date', $date->toDateString())
+            ->first();
+
+        if(!$logHariIni || !$logHariIni->is_completed) {
+            $date = $date->subDay();
+        }
+
+        while (true) {
+            $log = \App\Models\HabitLog::where('habit_id', $id)
+            ->where('date', $date->toDateString())
+            ->first();
+
+            if($log && $log->is_completed){
+                $streak++;
+                $date = $date->subDay();
+            } else {
+                break;
+            }
+        }
+
+        return response()->json(['streak' => $streak]);
+    }
 }

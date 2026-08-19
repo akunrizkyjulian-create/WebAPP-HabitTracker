@@ -152,3 +152,9 @@ body {
 .date-item.active .date-day-number {
     color: white;
 }
+.habit-streak {
+    font-size: 13px;
+    color: #e08e0b;
+    margin: 4px 0 12px 0;
+    font-weight: 600;
+}
